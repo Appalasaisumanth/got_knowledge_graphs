@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"borderWidth": 5, "color": {"background": "#f1c40f", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "Queen Cersei Lannister", "label": "Queen Cersei Lannister", "shape": "dot", "size": 24}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Joffrey Baratheon", "label": "Joffrey Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Myrielle Lannister", "label": "Myrielle Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Cerenna Lannister", "label": "Cerenna Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Jocelyn Swyft", "label": "Lady Jocelyn Swyft", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Princess Myrcella Baratheon", "label": "Princess Myrcella Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Genna Lannister", "label": "Lady Genna Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "King Joffrey I Baratheon", "label": "King Joffrey I Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Tyrion Lannister", "label": "Tyrion Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Hoke", "label": "Hoke", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Short-Ear", "label": "Short-Ear", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Kevan Lannister", "label": "Ser Kevan Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "King Tommen I Baratheon", "label": "King Tommen I Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Dorcas", "label": "Dorcas", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Margot", "label": "Lady Margot", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Lancel", "label": "Ser Lancel", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Jaime Lannister", "label": "Ser Jaime Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Tyrek Lannister", "label": "Tyrek Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Red Lester", "label": "Red Lester", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lum", "label": "Lum", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Damion Lannister", "label": "Ser Damion Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Senelle", "label": "Senelle", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Puckens", "label": "Puckens", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Daven Lannister", "label": "Ser Daven Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Joy Hill", "label": "Joy Hill", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Queen Cersei Lannister", "label": "Mother", "title": "\u003cb\u003eMother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eQueen Regent and Protector of the Realm\u003c/small\u003e", "to": "Joffrey Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Myrielle Lannister", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003edaughter of her uncle Stafford\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Myrielle Lannister", "label": "Sister", "title": "\u003cb\u003eSister\u003c/b\u003e\u003cbr\u003e\u003csmall\u003edaughter of her uncle Stafford\u003c/small\u003e", "to": "Cerenna Lannister", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lady Jocelyn Swyft", "label": "Companion", "title": "\u003cb\u003eCompanion\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCompanion\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Cerenna Lannister", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003edaughter of her late uncle Stafford, her mother\u2019s brother\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Princess Myrcella Baratheon", "label": "Child", "title": "\u003cb\u003eChild\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea girl of nine, a ward of Prince Doran Martell at Sunspear\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lady Genna Lannister", "label": "Aunt", "title": "\u003cb\u003eAunt\u003c/b\u003e\u003cbr\u003e\u003csmall\u003em Ser Emmon Frey\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "King Joffrey I Baratheon", "label": "Child", "title": "\u003cb\u003eChild\u003c/b\u003e\u003cbr\u003e\u003csmall\u003epoisoned at his wedding feast, a boy of twelve\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Tyrion Lannister", "label": "Maternal Uncle", "title": "\u003cb\u003eMaternal Uncle\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eacting Hand of the King\u003c/small\u003e", "to": "Joffrey Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Tyrion Lannister", "label": "Brother", "title": "\u003cb\u003eBrother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecalled THE IMP, a dwarf\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Hoke", "label": "Guardsman", "title": "\u003cb\u003eGuardsman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecalled HORSELEG\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Short-Ear", "label": "Guardsman", "title": "\u003cb\u003eGuardsman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGuardsman\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Kevan Lannister", "label": "Master Of Laws", "title": "\u003cb\u003eMaster Of Laws\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMaster Of Laws\u003c/small\u003e", "to": "Joffrey Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Kevan Lannister", "label": "Uncle", "title": "\u003cb\u003eUncle\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eUncle\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Kevan Lannister", "label": "Master Of Laws", "title": "\u003cb\u003eMaster Of Laws\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMaster Of Laws\u003c/small\u003e", "to": "King Tommen I Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Dorcas", "label": "Bedmaid And Servingwoman", "title": "\u003cb\u003eBedmaid And Servingwoman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBedmaid And Servingwoman\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lady Margot", "label": "Still More Distant Cousin", "title": "\u003cb\u003eStill More Distant Cousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003em Lord Titus Peake\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Lancel", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eformerly King Robert\u2019s squire and Cersei\u2019s lover, newly raised to Lord of Darry\u003c/small\u003e", "to": "Ser Kevan Lannister", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Lancel", "label": "Cousin, Lover", "title": "\u003cb\u003eCousin, Lover\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eformerly King Robert\u2019s squire, newly raised to Lord of Darry\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Jaime Lannister", "label": "Kingsguard", "title": "\u003cb\u003eKingsguard\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecalled the KINGSLAYER, a captive at Riverrun\u003c/small\u003e", "to": "Joffrey Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Jaime Lannister", "label": "Brother", "title": "\u003cb\u003eBrother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eher twin, called THE KINGSLAYER\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Jaime Lannister", "label": "Kingsguard", "title": "\u003cb\u003eKingsguard\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eKingsguard\u003c/small\u003e", "to": "King Tommen I Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Joffrey Baratheon", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFirst of His Name, thirteen years old, eldest son\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Tyrek Lannister", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eson of her father\u2019s late brother Tygett\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Red Lester", "label": "Guardsman", "title": "\u003cb\u003eGuardsman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGuardsman\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "King Tommen I Baratheon", "label": "Child", "title": "\u003cb\u003eChild\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea boy king of eight years\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lum", "label": "Guardsman", "title": "\u003cb\u003eGuardsman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGuardsman\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Damion Lannister", "label": "More Distant Cousin", "title": "\u003cb\u003eMore Distant Cousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003em Shiera Crakehall\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Senelle", "label": "Bedmaid And Servingwoman", "title": "\u003cb\u003eBedmaid And Servingwoman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBedmaid And Servingwoman\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Puckens", "label": "Guardsman", "title": "\u003cb\u003eGuardsman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGuardsman\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Daven Lannister", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCousin\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Joy Hill", "label": "Bastard Daughter Of Her Lost Uncle Gerion", "title": "\u003cb\u003eBastard Daughter Of Her Lost Uncle Gerion\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea girl of eleven\u003c/small\u003e", "to": "Queen Cersei Lannister", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>

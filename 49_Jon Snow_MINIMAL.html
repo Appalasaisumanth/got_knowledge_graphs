@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "His Siblings", "label": "His Siblings", "shape": "dot", "size": 14}, {"borderWidth": 5, "color": {"background": "#3498db", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "Jon Snow", "label": "Jon Snow", "shape": "dot", "size": 24}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ghost", "label": "Ghost", "shape": "dot", "size": 14}, {"color": {"background": "#3498db", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Arya", "label": "Arya", "shape": "dot", "size": 14}, {"color": {"background": "#3498db", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Robb Stark", "label": "Robb Stark", "shape": "dot", "size": 14}, {"color": {"background": "#3498db", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Eddard Stark", "label": "Eddard Stark", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "His Household", "label": "His Household", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Night\u2019S Watch", "label": "Night\u2019S Watch", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Orell", "label": "Orell", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Rickon\u2019S Companion And Protector", "label": "\u2014Rickon\u2019S Companion And Protector", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014His Siblings", "label": "\u2014His Siblings", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ygritte", "label": "Ygritte", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Mance Rayder", "label": "Mance Rayder", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014His Chiefs And Captains", "label": "\u2014His Chiefs And Captains", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014His Household", "label": "\u2014His Household", "shape": "dot", "size": 14}, {"color": {"background": "#3498db", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Bran\u2019S Companions And Protectors", "label": "\u2014Bran\u2019S Companions And Protectors", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Their Children", "label": "\u2014Their Children", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Jeor Mormont", "label": "Jeor Mormont", "shape": "dot", "size": 14}, {"color": {"background": "#3498db", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Brandon (Bran)", "label": "Brandon (Bran)", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Rickon", "label": "Rickon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Eddison Tollett", "label": "Eddison Tollett", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "His Siblings", "label": "His Siblings", "title": "\u003cb\u003eHis Siblings\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eJON SNOW\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "His Siblings", "label": "His Siblings", "title": "\u003cb\u003eHis Siblings\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGHOST\u003c/small\u003e", "to": "Ghost", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Arya", "label": "Sibling", "title": "\u003cb\u003eSibling\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea girl of ten\u003c/small\u003e", "to": "Robb Stark", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Robb Stark", "label": "Eldest Son", "title": "\u003cb\u003eEldest Son\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea boy of fifteen years\u003c/small\u003e", "to": "Eddard Stark", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "His Household", "label": "His Household", "title": "\u003cb\u003eHis Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eJON SNOW\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "His Household", "label": "His Household", "title": "\u003cb\u003eHis Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGHOST\u003c/small\u003e", "to": "Ghost", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Night\u2019S Watch", "label": "Organization With Lord Commander", "title": "\u003cb\u003eOrganization With Lord Commander\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eOrganization With Lord Commander\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Eddard Stark", "label": "Father", "title": "\u003cb\u003eFather\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Winterfell\u003c/small\u003e", "to": "Robb Stark", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Orell", "label": "Slain By", "title": "\u003cb\u003eSlain By\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea skinchanger\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Rickon\u2019S Companion And Protector", "label": "\u2014Rickon\u2019S Companion And Protector", "title": "\u003cb\u003e\u2014Rickon\u2019S Companion And Protector\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eJON SNOW\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "\u2014Rickon\u2019S Companion And Protector", "label": "\u2014Rickon\u2019S Companion And Protector", "title": "\u003cb\u003e\u2014Rickon\u2019S Companion And Protector\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGHOST\u003c/small\u003e", "to": "Ghost", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Siblings", "label": "\u2014His Siblings", "title": "\u003cb\u003e\u2014His Siblings\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eJON SNOW\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "\u2014His Siblings", "label": "\u2014His Siblings", "title": "\u003cb\u003e\u2014His Siblings\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGHOST\u003c/small\u003e", "to": "Ghost", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ygritte", "label": "Member Of His Band", "title": "\u003cb\u003eMember Of His Band\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea young spearwife\u003c/small\u003e", "to": "Mance Rayder", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ygritte", "label": "Lover", "title": "\u003cb\u003eLover\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea young spearwife\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Chiefs And Captains", "label": "\u2014His Chiefs And Captains", "title": "\u003cb\u003e\u2014His Chiefs And Captains\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eJON SNOW\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ghost", "label": "Direwolf", "title": "\u003cb\u003eDirewolf\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eDirewolf\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eJON SNOW\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGHOST\u003c/small\u003e", "to": "Ghost", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Bran\u2019S Companions And Protectors", "label": "\u2014Bran\u2019S\tCompanions\tAnd\tProtectors", "title": "\u003cb\u003e\u2014Bran\u2019S\tCompanions\tAnd\tProtectors\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eJON\tSNOW\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "\u2014Their Children", "label": "\u2014Their Children", "title": "\u003cb\u003e\u2014Their Children\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eROBB STARK\u003c/small\u003e", "to": "Robb Stark", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Their Children", "label": "\u2014Their Children", "title": "\u003cb\u003e\u2014Their Children\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eJON SNOW\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jon Snow", "label": "Half-Brother", "title": "\u003cb\u003eHalf-Brother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea bastard of fifteen years, a man of the Night\u2019s Watch\u003c/small\u003e", "to": "Robb Stark", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jon Snow", "label": "Steward, Squire", "title": "\u003cb\u003eSteward, Squire\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ethe Bastard of Winterfell, lost while scouting the Skirling Pass\u003c/small\u003e", "to": "Jeor Mormont", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jon Snow", "label": "Direwolf", "title": "\u003cb\u003eDirewolf\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewhite and silent (Ghost)\u003c/small\u003e", "to": "Ghost", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jon Snow", "label": "Captive", "title": "\u003cb\u003eCaptive\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ethe crow-come-over\u003c/small\u003e", "to": "Mance Rayder", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jon Snow", "label": "Lord Commander", "title": "\u003cb\u003eLord Commander\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ethe Bastard of Winterfell, nine-hundred-and-ninety-eighth Lord Commander of the Night\u2019s Watch\u003c/small\u003e", "to": "Night\u2019S Watch", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jon Snow", "label": "Bastard Half-Brother", "title": "\u003cb\u003eBastard Half-Brother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBastard Half-Brother\u003c/small\u003e", "to": "Arya", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jon Snow", "label": "Bastard Half-Brother", "title": "\u003cb\u003eBastard Half-Brother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBastard Half-Brother\u003c/small\u003e", "to": "Brandon (Bran)", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jon Snow", "label": "Bastard Half-Brother", "title": "\u003cb\u003eBastard Half-Brother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBastard Half-Brother\u003c/small\u003e", "to": "Rickon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jon Snow", "label": "Bastard Son", "title": "\u003cb\u003eBastard Son\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eA boy of fourteen.\u003c/small\u003e", "to": "Eddard Stark", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Jeor Mormont", "label": "Lord Commander", "title": "\u003cb\u003eLord Commander\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ehis steward and squire\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Eddison Tollett", "label": "Squire", "title": "\u003cb\u003eSquire\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecalled DOLOROUS EDD\u003c/small\u003e", "to": "Jeor Mormont", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Eddison Tollett", "label": "Steward", "title": "\u003cb\u003eSteward\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecalled DOLOROUS EDD\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Rickon", "label": "Sibling", "title": "\u003cb\u003eSibling\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea boy of four\u003c/small\u003e", "to": "Robb Stark", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>

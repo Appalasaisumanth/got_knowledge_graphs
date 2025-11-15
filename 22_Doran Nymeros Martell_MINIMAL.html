@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Caleotte", "label": "Caleotte", "shape": "dot", "size": 14}, {"borderWidth": 5, "color": {"background": "#d35400", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "Doran Nymeros Martell", "label": "Doran Nymeros Martell", "shape": "dot", "size": 24}, {"color": {"background": "#d35400", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "{Prince Oberyn}", "label": "{Prince Oberyn}", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Anders Yronwood", "label": "Anders Yronwood", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Prince Trystane", "label": "Prince Trystane", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Mellario", "label": "Mellario", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Edric Dayne", "label": "Edric Dayne", "shape": "dot", "size": 14}, {"color": {"background": "#d35400", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Quentyn Martell", "label": "Quentyn Martell", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Princess Arianne", "label": "Princess Arianne", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Prince Quentyn", "label": "Prince Quentyn", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Delonne Allyrion", "label": "Delonne Allyrion", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Maester Caleotte", "label": "Maester Caleotte", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Tremond Gargalen", "label": "Tremond Gargalen", "shape": "dot", "size": 14}, {"color": {"background": "#d35400", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Elia Martell", "label": "Elia Martell", "shape": "dot", "size": 14}, {"color": {"background": "#d35400", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Oberyn Martell", "label": "Oberyn Martell", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Nymella Toland", "label": "Nymella Toland", "shape": "dot", "size": 14}, {"color": {"background": "#d35400", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Trystane Martell", "label": "Trystane Martell", "shape": "dot", "size": 14}, {"color": {"background": "#d35400", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Prince Oberyn", "label": "Prince Oberyn", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "{Princess Elia}", "label": "{Princess Elia}", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Gascoyne Of The Greenblood", "label": "Ser Gascoyne Of The Greenblood", "shape": "dot", "size": 14}, {"color": {"background": "#d35400", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Arianne Martell", "label": "Arianne Martell", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Princess Elia", "label": "Princess Elia", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Areo Hotah", "label": "Areo Hotah", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "House Jordayne", "label": "House Jordayne", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "House Santagar", "label": "House Santagar", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "House Allyrion", "label": "House Allyrion", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "House Toland", "label": "House Toland", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "House Yronwood", "label": "House Yronwood", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "House Wyl", "label": "House Wyl", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "House Fowler", "label": "House Fowler", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "House Dayne", "label": "House Dayne", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Caleotte", "label": "Counselor, Healer, Tutor", "title": "\u003cb\u003eCounselor, Healer, Tutor\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCounselor, Healer, Tutor\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "{Prince Oberyn}", "label": "Sibling", "title": "\u003cb\u003eSibling\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecalled THE RED VIPER\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Anders Yronwood", "label": "Bannerman", "title": "\u003cb\u003eBannerman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Prince Trystane", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eyounger son\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Prince Trystane", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eyounger son\u003c/small\u003e", "to": "Mellario", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Dayne", "label": "Bannerman", "title": "\u003cb\u003eBannerman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Quentyn Martell", "label": "Elder Son", "title": "\u003cb\u003eElder Son\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eElder Son\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Princess Arianne", "label": "Daughter", "title": "\u003cb\u003eDaughter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eeldest daughter\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Princess Arianne", "label": "Daughter", "title": "\u003cb\u003eDaughter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eeldest daughter\u003c/small\u003e", "to": "Mellario", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Mellario", "label": "Wife", "title": "\u003cb\u003eWife\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eWife\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Mellario", "label": "Mother", "title": "\u003cb\u003eMother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMother\u003c/small\u003e", "to": "Princess Arianne", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Mellario", "label": "Mother", "title": "\u003cb\u003eMother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMother\u003c/small\u003e", "to": "Prince Quentyn", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Mellario", "label": "Mother", "title": "\u003cb\u003eMother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMother\u003c/small\u003e", "to": "Prince Trystane", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Delonne Allyrion", "label": "Bannerman", "title": "\u003cb\u003eBannerman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Maester Caleotte", "label": "Maester", "title": "\u003cb\u003eMaester\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecounselor, healer, and tutor, part of Doran Nymeros Martell\u0027s household\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Tremond Gargalen", "label": "Bannerman", "title": "\u003cb\u003eBannerman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Elia Martell", "label": "Sister", "title": "\u003cb\u003eSister\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewife of Prince Rhaegar Targaryen, slain during the Sack of King\u2019s Landing\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Prince Quentyn", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eeldest son\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Prince Quentyn", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eeldest son\u003c/small\u003e", "to": "Mellario", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Oberyn Martell", "label": "Brother", "title": "\u003cb\u003eBrother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecalled THE RED VIPER\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Nymella Toland", "label": "Bannerman", "title": "\u003cb\u003eBannerman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Trystane Martell", "label": "Younger Son", "title": "\u003cb\u003eYounger Son\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ebetrothed to Myrcella Baratheon\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Prince Oberyn", "label": "Brother", "title": "\u003cb\u003eBrother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ethe Red Viper\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "{Princess Elia}", "label": "Sibling", "title": "\u003cb\u003eSibling\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eraped and murdered during the Sack of King\u2019s Landing\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Gascoyne Of The Greenblood", "label": "Sworn Shield", "title": "\u003cb\u003eSworn Shield\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ePrince Trystane\u2019s sworn shield\u003c/small\u003e", "to": "Prince Trystane", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Gascoyne Of The Greenblood", "label": "Sworn Shield", "title": "\u003cb\u003eSworn Shield\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSworn Shield\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Arianne Martell", "label": "Eldest Daughter", "title": "\u003cb\u003eEldest Daughter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eheir to Sunspear\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Husband", "title": "\u003cb\u003eHusband\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eHusband\u003c/small\u003e", "to": "Mellario", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Father", "title": "\u003cb\u003eFather\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFather\u003c/small\u003e", "to": "Princess Arianne", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Father", "title": "\u003cb\u003eFather\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFather\u003c/small\u003e", "to": "Prince Quentyn", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Father", "title": "\u003cb\u003eFather\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFather\u003c/small\u003e", "to": "Prince Trystane", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Brother", "title": "\u003cb\u003eBrother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBrother\u003c/small\u003e", "to": "Princess Elia", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Brother", "title": "\u003cb\u003eBrother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBrother\u003c/small\u003e", "to": "Prince Oberyn", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eAreo Hotah is captain of guards in his household\u003c/small\u003e", "to": "Areo Hotah", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMaester Caleotte is counselor, healer, and tutor in his household\u003c/small\u003e", "to": "Maester Caleotte", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Starfall\u003c/small\u003e", "to": "Edric Dayne", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprincipal house sworn to Sunspear\u003c/small\u003e", "to": "House Jordayne", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprincipal house sworn to Sunspear\u003c/small\u003e", "to": "House Santagar", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprincipal house sworn to Sunspear\u003c/small\u003e", "to": "House Allyrion", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprincipal house sworn to Sunspear\u003c/small\u003e", "to": "House Toland", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprincipal house sworn to Sunspear\u003c/small\u003e", "to": "House Yronwood", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprincipal house sworn to Sunspear\u003c/small\u003e", "to": "House Wyl", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprincipal house sworn to Sunspear\u003c/small\u003e", "to": "House Fowler", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Doran Nymeros Martell", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eprincipal house sworn to Sunspear\u003c/small\u003e", "to": "House Dayne", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Princess Elia", "label": "Sister", "title": "\u003cb\u003eSister\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSister\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Areo Hotah", "label": "Captain Of Guards", "title": "\u003cb\u003eCaptain Of Guards\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eNorvashi sellsword, part of Doran Nymeros Martell\u0027s household\u003c/small\u003e", "to": "Doran Nymeros Martell", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>

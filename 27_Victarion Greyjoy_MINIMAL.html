@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Hotho Harlaw", "label": "Hotho Harlaw", "shape": "dot", "size": 14}, {"borderWidth": 5, "color": {"background": "#2c3e50", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "Victarion Greyjoy", "label": "Victarion Greyjoy", "shape": "dot", "size": 24}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Burton Humble", "label": "Burton Humble", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Fralegg The Strong", "label": "Fralegg The Strong", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ralf The Limper", "label": "Ralf The Limper", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ragnor Pyke", "label": "Ragnor Pyke", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Wulfe One-Ear", "label": "Wulfe One-Ear", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Longwater Pyke", "label": "Longwater Pyke", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Red Ralf Stonehouse", "label": "Red Ralf Stonehouse", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Manfryd Merlyn", "label": "Manfryd Merlyn", "shape": "dot", "size": 14}, {"color": {"background": "#2c3e50", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Balon Greyjoy", "label": "Balon Greyjoy", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "A Dusky Woman", "label": "A Dusky Woman", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Maester Kerwin", "label": "Maester Kerwin", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Euron Crows Eye", "label": "Euron Crows Eye", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Wulf One-Ear", "label": "Wulf One-Ear", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Quellon Humble", "label": "Quellon Humble", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Daegon Shepherd", "label": "Daegon Shepherd", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Little Lenwood Tawney", "label": "Little Lenwood Tawney", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Dusky Woman", "label": "Dusky Woman", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Nute The Barber", "label": "Nute The Barber", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Romny Weaver", "label": "Romny Weaver", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Will Humble", "label": "Will Humble", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Alvyn Sharp", "label": "Alvyn Sharp", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Tom Tidewood", "label": "Tom Tidewood", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Gorold Goodbrother", "label": "Gorold Goodbrother", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Maron Volmark", "label": "Maron Volmark", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ralf Kenning", "label": "Ralf Kenning", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Steffar Stammerer", "label": "Steffar Stammerer", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Rodrik Sparr", "label": "Rodrik Sparr", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Tom Codd", "label": "Tom Codd", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Hotho Harlaw", "label": "Captain, Supporter", "title": "\u003cb\u003eCaptain, Supporter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain, Supporter\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Burton Humble", "label": "Crewman", "title": "\u003cb\u003eCrewman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecrew on the Iron Victory\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Fralegg The Strong", "label": "Captain, Supporter", "title": "\u003cb\u003eCaptain, Supporter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain, Supporter\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ralf The Limper", "label": "Captain", "title": "\u003cb\u003eCaptain\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ragnor Pyke", "label": "Crewman", "title": "\u003cb\u003eCrewman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecrew on the Iron Victory\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Wulfe One-Ear", "label": "Crewman", "title": "\u003cb\u003eCrewman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecrew on the Iron Victory\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Longwater Pyke", "label": "Crewman", "title": "\u003cb\u003eCrewman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecrew on the Iron Victory\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Red Ralf Stonehouse", "label": "Captain", "title": "\u003cb\u003eCaptain\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Manfryd Merlyn", "label": "Captain", "title": "\u003cb\u003eCaptain\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Victarion Greyjoy", "label": "Brother, Master, Lord Captain", "title": "\u003cb\u003eBrother, Master, Lord Captain\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBrother, Master, Lord Captain\u003c/small\u003e", "to": "Balon Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Victarion Greyjoy", "label": "Owner", "title": "\u003cb\u003eOwner\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eOwner\u003c/small\u003e", "to": "A Dusky Woman", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Victarion Greyjoy", "label": "Employer", "title": "\u003cb\u003eEmployer\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eEmployer\u003c/small\u003e", "to": "Maester Kerwin", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Victarion Greyjoy", "label": "Recipient Of Gifts", "title": "\u003cb\u003eRecipient Of Gifts\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eRecipient Of Gifts\u003c/small\u003e", "to": "Euron Crows Eye", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Wulf One-Ear", "label": "Crewman", "title": "\u003cb\u003eCrewman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCrewman\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Quellon Humble", "label": "Crewman", "title": "\u003cb\u003eCrewman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecrew on the Iron Victory\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Daegon Shepherd", "label": "Captain", "title": "\u003cb\u003eCaptain\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Little Lenwood Tawney", "label": "Captain, Supporter", "title": "\u003cb\u003eCaptain, Supporter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain, Supporter\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "A Dusky Woman", "label": "Bedwarmer", "title": "\u003cb\u003eBedwarmer\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewithout a tongue, a gift from Euron Crows Eye\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Dusky Woman", "label": "Bedmate", "title": "\u003cb\u003eBedmate\u003c/b\u003e\u003cbr\u003e\u003csmall\u003emute and tongueless, a gift from his brother Euron\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Nute The Barber", "label": "Champion", "title": "\u003cb\u003eChampion\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eChampion\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Romny Weaver", "label": "Captain, Supporter", "title": "\u003cb\u003eCaptain, Supporter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain, Supporter\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Maester Kerwin", "label": "Healer", "title": "\u003cb\u003eHealer\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea gift from Euron Crows Eye\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Will Humble", "label": "Captain, Supporter", "title": "\u003cb\u003eCaptain, Supporter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain, Supporter\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Alvyn Sharp", "label": "Captain, Supporter", "title": "\u003cb\u003eCaptain, Supporter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain, Supporter\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Tom Tidewood", "label": "Crewman", "title": "\u003cb\u003eCrewman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecrew on the Iron Victory\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Gorold Goodbrother", "label": "Captain, Supporter", "title": "\u003cb\u003eCaptain, Supporter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain, Supporter\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Maron Volmark", "label": "Captain, Supporter", "title": "\u003cb\u003eCaptain, Supporter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain, Supporter\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ralf Kenning", "label": "Captain, Supporter", "title": "\u003cb\u003eCaptain, Supporter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain, Supporter\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Steffar Stammerer", "label": "Crewman", "title": "\u003cb\u003eCrewman\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecrew on the Iron Victory\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Euron Crows Eye", "label": "Giver Of Gifts", "title": "\u003cb\u003eGiver Of Gifts\u003c/b\u003e\u003cbr\u003e\u003csmall\u003egave bedwarmer and healer as gifts\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Rodrik Sparr", "label": "Captain", "title": "\u003cb\u003eCaptain\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Tom Codd", "label": "Captain", "title": "\u003cb\u003eCaptain\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCaptain\u003c/small\u003e", "to": "Victarion Greyjoy", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>

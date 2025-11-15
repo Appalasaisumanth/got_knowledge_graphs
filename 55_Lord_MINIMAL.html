@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Prince Doran\u2019S Bannermen, The Lords Of Dorne", "label": "\u2014Prince Doran\u2019S Bannermen, The Lords Of Dorne", "shape": "dot", "size": 14}, {"borderWidth": 5, "color": {"background": "#95a5a6", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "Lord", "label": "Lord", "shape": "dot", "size": 24}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Mace\u2019S Sisters", "label": "\u2014Mace\u2019S Sisters", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Cersei\u2019S Court At King\u2019S Landing", "label": "\u2014Cersei\u2019S Court At King\u2019S Landing", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Bronze Yohn\u2019S Household", "label": "\u2014Bronze Yohn\u2019S Household", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Lady Margot, A Cousin, M Lord Titus Peake,\u2014The Household At Casterly Rock", "label": "\u2014Lady Margot, A Cousin, M Lord Titus Peake,\u2014The Household At Casterly Rock", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Stannis\u2019S Court At Castle Black", "label": "\u2014Stannis\u2019S Court At Castle Black", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Lord Leyton\u2019S Bannermen", "label": "\u2014Lord Leyton\u2019S Bannermen", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Tommen\u2019S Kingsguard", "label": "\u2014Tommen\u2019S Kingsguard", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Iii", "label": "Iii", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Lord Robert\u2019S Bannermen, The Lords Of The Vale", "label": "\u2014Lord Robert\u2019S Bannermen, The Lords Of The Vale", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Young Lord Robert", "label": "Young Lord Robert", "shape": "dot", "size": 14}, {"color": {"background": "#27ae60", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Margaery\u2019S Court At King\u2019S Landing", "label": "\u2014Margaery\u2019S Court At King\u2019S Landing", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Iv", "label": "Iv", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Young Lord Hunter\u2019S Household", "label": "\u2014Young Lord Hunter\u2019S Household", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Their Children", "label": "\u2014Their Children", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Mace\u2019S Household At Highgarden", "label": "\u2014Mace\u2019S Household At Highgarden", "shape": "dot", "size": 14}, {"color": {"background": "#3498db", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Robb\u2019S Uncles And Cousins", "label": "\u2014Robb\u2019S Uncles And Cousins", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ii", "label": "Ii", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Stannis\u2019S Garrison At Storm\u2019S End", "label": "\u2014Stannis\u2019S Garrison At Storm\u2019S End", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Stannis\u2019S Court At Eastwatch-By-The-Sea", "label": "\u2014Stannis\u2019S Court At Eastwatch-By-The-Sea", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Lord Rodrik\u2019S Bannermen And Sworn Swords", "label": "\u2014Lord Rodrik\u2019S Bannermen And Sworn Swords", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Lord Edmure\u2019S Household At Riverrun", "label": "\u2014Lord Edmure\u2019S Household At Riverrun", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Prince Doran\u2019S Bannermen, The Lords Of Dorne", "label": "\u2014Prince\tDoran\u2019S\tBannermen,\tThe\tLords\tOf\tDorne", "title": "\u003cb\u003e\u2014Prince\tDoran\u2019S\tBannermen,\tThe\tLords\tOf\tDorne\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tHellholt\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Mace\u2019S Sisters", "label": "\u2014Mace\u2019S\tSisters", "title": "\u003cb\u003e\u2014Mace\u2019S\tSisters\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tthe\tArbor\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Cersei\u2019S Court At King\u2019S Landing", "label": "\u2014Cersei\u2019S\tCourt\tAt\tKing\u2019S\tLanding", "title": "\u003cb\u003e\u2014Cersei\u2019S\tCourt\tAt\tKing\u2019S\tLanding\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tRosby\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Bronze Yohn\u2019S Household", "label": "\u2014Bronze\tYohn\u2019S\tHousehold", "title": "\u003cb\u003e\u2014Bronze\tYohn\u2019S\tHousehold\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tLongbow\tHall\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Lady Margot, A Cousin, M Lord Titus Peake,\u2014The Household At Casterly Rock", "label": "\u2014Lady\tMargot,\tA\tCousin,\tM Lord\tTitus\tPeake,\u2014The\tHousehold\tAt\tCasterly\tRock", "title": "\u003cb\u003e\u2014Lady\tMargot,\tA\tCousin,\tM Lord\tTitus\tPeake,\u2014The\tHousehold\tAt\tCasterly\tRock\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tHornvale\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Stannis\u2019S Court At Castle Black", "label": "\u2014Stannis\u2019S\tCourt\tAt\tCastle\tBlack", "title": "\u003cb\u003e\u2014Stannis\u2019S\tCourt\tAt\tCastle\tBlack\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\ttheRainwood\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Lord Leyton\u2019S Bannermen", "label": "\u2014Lord\tLeyton\u2019S\tBannermen", "title": "\u003cb\u003e\u2014Lord\tLeyton\u2019S\tBannermen\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tSunflower\tHall\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Tommen\u2019S Kingsguard", "label": "\u2014Tommen\u2019S\tKingsguard", "title": "\u003cb\u003e\u2014Tommen\u2019S\tKingsguard\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tHighgarden\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Iii", "label": "Iii", "title": "\u003cb\u003eIii\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tDuskendale\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Lord Robert\u2019S Bannermen, The Lords Of The Vale", "label": "\u2014Lord\tRobert\u2019S\tBannermen,\tThe\tLords\tOf\tThe\tVale", "title": "\u003cb\u003e\u2014Lord\tRobert\u2019S\tBannermen,\tThe\tLords\tOf\tThe\tVale\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tthe\tSnakewood\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Young Lord Robert", "label": "Young\tLord\tRobert", "title": "\u003cb\u003eYoung\tLord\tRobert\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tRunestone\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Margaery\u2019S Court At King\u2019S Landing", "label": "\u2014Margaery\u2019S\tCourt\tAt\tKing\u2019S\tLanding", "title": "\u003cb\u003e\u2014Margaery\u2019S\tCourt\tAt\tKing\u2019S\tLanding\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tthe\tArbor\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Iv", "label": "Iv", "title": "\u003cb\u003eIv\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tthe\tSeven\tKingdoms\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Young Lord Hunter\u2019S Household", "label": "\u2014Young\tLord\tHunter\u2019S\tHousehold", "title": "\u003cb\u003e\u2014Young\tLord\tHunter\u2019S\tHousehold\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tRedfort\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Their Children", "label": "\u2014Their\tChildren", "title": "\u003cb\u003e\u2014Their\tChildren\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tthe\tArbor\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Mace\u2019S Household At Highgarden", "label": "\u2014Mace\u2019S\tHousehold\tAt\tHighgarden", "title": "\u003cb\u003e\u2014Mace\u2019S\tHousehold\tAt\tHighgarden\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tOakenshield\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Robb\u2019S Uncles And Cousins", "label": "\u2014Robb\u2019S\tUncles\tAnd\tCousins", "title": "\u003cb\u003e\u2014Robb\u2019S\tUncles\tAnd\tCousins\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tthe\tDreadfort\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ii", "label": "Ii", "title": "\u003cb\u003eIi\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tthe\tEyrie\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Stannis\u2019S Garrison At Storm\u2019S End", "label": "\u2014Stannis\u2019S\tGarrison\tAt\tStorm\u2019S\tEnd", "title": "\u003cb\u003e\u2014Stannis\u2019S\tGarrison\tAt\tStorm\u2019S\tEnd\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tthe\tRainwood\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Stannis\u2019S Court At Eastwatch-By-The-Sea", "label": "\u2014Stannis\u2019S\tCourt\tAt\tEastwatch-By-The-Sea", "title": "\u003cb\u003e\u2014Stannis\u2019S\tCourt\tAt\tEastwatch-By-The-Sea\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tSharp\tPoint\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Lord Rodrik\u2019S Bannermen And Sworn Swords", "label": "\u2014Lord\tRodrik\u2019S\tBannermen\tAnd\tSworn\tSwords", "title": "\u003cb\u003e\u2014Lord\tRodrik\u2019S\tBannermen\tAnd\tSworn\tSwords\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tVolmark\u003c/small\u003e", "to": "Lord", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Lord Edmure\u2019S Household At Riverrun", "label": "\u2014Lord\tEdmure\u2019S\tHousehold\tAt\tRiverrun", "title": "\u003cb\u003e\u2014Lord\tEdmure\u2019S\tHousehold\tAt\tRiverrun\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord\tof\tWayfarer\u2019s\tRest\u003c/small\u003e", "to": "Lord", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>

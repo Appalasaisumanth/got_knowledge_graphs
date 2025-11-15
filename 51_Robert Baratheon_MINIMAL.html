@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Barra", "label": "Barra", "shape": "dot", "size": 14}, {"borderWidth": 5, "color": {"background": "#e67e22", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "Robert Baratheon", "label": "Robert Baratheon", "shape": "dot", "size": 24}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Renly Baratheon", "label": "Renly Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Mya Stone", "label": "Mya Stone", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Lomas Estermont", "label": "Ser Lomas Estermont", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Stannis Baratheon", "label": "Stannis Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Eldon Estermont", "label": "Ser Eldon Estermont", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Queen Cersei", "label": "Queen Cersei", "shape": "dot", "size": 14}, {"color": {"background": "#e74c3c", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Aerys Ii", "label": "Aerys Ii", "shape": "dot", "size": 14}, {"color": {"background": "#e74c3c", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Rhaegar Targaryen", "label": "Rhaegar Targaryen", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "King Joffrey Baratheon", "label": "King Joffrey Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#e74c3c", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Prince Rhaegar Targaryen", "label": "Prince Rhaegar Targaryen", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "King Tommen Baratheon", "label": "King Tommen Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Gendry", "label": "Gendry", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Alyn Estermont", "label": "Ser Alyn Estermont", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Aemon Estermont", "label": "Ser Aemon Estermont", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Edric Storm", "label": "Edric Storm", "shape": "dot", "size": 14}, {"color": {"background": "#e74c3c", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "King Aegon V Targaryen", "label": "King Aegon V Targaryen", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Princess Myrcella", "label": "Princess Myrcella", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Andrew Estermont", "label": "Ser Andrew Estermont", "shape": "dot", "size": 14}, {"color": {"background": "#e74c3c", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Rhaegar", "label": "Rhaegar", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Barra", "label": "Bastard Daughter", "title": "\u003cb\u003eBastard Daughter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eby a whore of Kings Landing\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Renly Baratheon", "label": "Brother", "title": "\u003cb\u003eBrother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003erebel\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Mya Stone", "label": "Bastard Child", "title": "\u003cb\u003eBastard Child\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea maid of nineteen, in the service of Lord Nestor Royce, of the Gates of the Moon\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Lomas Estermont", "label": "Uncle", "title": "\u003cb\u003eUncle\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eUncle\u003c/small\u003e", "to": "Stannis Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Lomas Estermont", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCousin\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Lomas Estermont", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSon\u003c/small\u003e", "to": "Ser Eldon Estermont", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Queen Cersei", "label": "Wife", "title": "\u003cb\u003eWife\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eWife\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Aerys Ii", "label": "Father And Heir-Relation", "title": "\u003cb\u003eFather And Heir-Relation\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ehis heir, the crown prince\u003c/small\u003e", "to": "Rhaegar Targaryen", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Aerys Ii", "label": "Antagonist (Indirect)", "title": "\u003cb\u003eAntagonist (Indirect)\u003c/b\u003e\u003cbr\u003e\u003csmall\u003edethroned in conflict where his heir Rhaegar was slain by Robert Baratheon\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "King Joffrey Baratheon", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea boy of thirteen\u003c/small\u003e", "to": "Queen Cersei", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "King Joffrey Baratheon", "label": "Child", "title": "\u003cb\u003eChild\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eChild\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Prince Rhaegar Targaryen", "label": "Son And Heir", "title": "\u003cb\u003eSon And Heir\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ethe crown prince, heir to the Iron Throne\u003c/small\u003e", "to": "Aerys Ii", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Prince Rhaegar Targaryen", "label": "Slayer Victim", "title": "\u003cb\u003eSlayer Victim\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eslain on the Trident\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Eldon Estermont", "label": "Uncle", "title": "\u003cb\u003eUncle\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ean uncle\u003c/small\u003e", "to": "Renly Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Eldon Estermont", "label": "Great-Uncle", "title": "\u003cb\u003eGreat-Uncle\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGreat-Uncle\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Rhaegar Targaryen", "label": "Heir, Crown Prince", "title": "\u003cb\u003eHeir, Crown Prince\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eHeir, Crown Prince\u003c/small\u003e", "to": "Aerys Ii", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "King Tommen Baratheon", "label": "Child", "title": "\u003cb\u003eChild\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eChild\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Gendry", "label": "Bastard Child", "title": "\u003cb\u003eBastard Child\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ean outlaw in the riverlands, ignorant of his heritage\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Alyn Estermont", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSon\u003c/small\u003e", "to": "Ser Aemon Estermont", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Alyn Estermont", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCousin\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Robert Baratheon", "label": "Father", "title": "\u003cb\u003eFather\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFather\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Robert Baratheon", "label": "His Grandmother Was A Daughter Of", "title": "\u003cb\u003eHis Grandmother Was A Daughter Of\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eclaim to the crown derived from his grandmother\u003c/small\u003e", "to": "King Aegon V Targaryen", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Robert Baratheon", "label": "Slayer Of", "title": "\u003cb\u003eSlayer Of\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eslain Rhaegar Targaryen on the Trident\u003c/small\u003e", "to": "Rhaegar Targaryen", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Robert Baratheon", "label": "Slayer", "title": "\u003cb\u003eSlayer\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eslain on the Trident\u003c/small\u003e", "to": "Prince Rhaegar Targaryen", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Robert Baratheon", "label": "Cause Of Downfall", "title": "\u003cb\u003eCause Of Downfall\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eslain Aerys II\u0027s heir Rhaegar Targaryen, in events that led to Aerys II being dethroned and killed\u003c/small\u003e", "to": "Aerys Ii", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Aemon Estermont", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea cousin\u003c/small\u003e", "to": "Ser Eldon Estermont", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Aemon Estermont", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea cousin\u003c/small\u003e", "to": "Renly Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Aemon Estermont", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCousin\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Stannis Baratheon", "label": "Brother", "title": "\u003cb\u003eBrother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003erebel\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Princess Myrcella", "label": "Daughter", "title": "\u003cb\u003eDaughter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea girl of eight\u003c/small\u003e", "to": "Queen Cersei", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Princess Myrcella", "label": "Child", "title": "\u003cb\u003eChild\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea ward in Sunspear\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Edric Storm", "label": "Baseborn Nephew", "title": "\u003cb\u003eBaseborn Nephew\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea boy of twelve, bastard son of King Robert by Delena Florent\u003c/small\u003e", "to": "Stannis Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Acknowledged Bastard Son", "title": "\u003cb\u003eAcknowledged Bastard Son\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ehiding in Lys\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Andrew Estermont", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea cousin\u003c/small\u003e", "to": "Ser Lomas Estermont", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Andrew Estermont", "label": "Cousin And Guardian", "title": "\u003cb\u003eCousin And Guardian\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCousin And Guardian\u003c/small\u003e", "to": "Edric Storm", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Andrew Estermont", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCousin\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Rhaegar", "label": "Slain By", "title": "\u003cb\u003eSlain By\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eslain on the Trident\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>

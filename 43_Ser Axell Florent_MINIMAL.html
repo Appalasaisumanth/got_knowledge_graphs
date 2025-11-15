@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Male-Gorn Of Redpool", "label": "Ser Male-Gorn Of Redpool", "shape": "dot", "size": 14}, {"borderWidth": 5, "color": {"background": "#95a5a6", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "Ser Axell Florent", "label": "Ser Axell Florent", "shape": "dot", "size": 24}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Narbert Grandison", "label": "Ser Narbert Grandison", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Princess Shireen", "label": "Princess Shireen", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Stannis Baratheon", "label": "Stannis Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Queen Selyse", "label": "Queen Selyse", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Benethon Scales", "label": "Ser Benethon Scales", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Lambert Whitewater", "label": "Ser Lambert Whitewater", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Patrek Of Kings Mountain", "label": "Ser Patrek Of Kings Mountain", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Dorden The Dour", "label": "Ser Dorden The Dour", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Perkin Follard", "label": "Ser Perkin Follard", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Brus Buckler", "label": "Ser Brus Buckler", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "King Stannis Baratheon", "label": "King Stannis Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "His Uncle And Cousins", "label": "His Uncle And Cousins", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "At Eastwatch-By-The-Sea", "label": "At Eastwatch-By-The-Sea", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Male-Gorn Of Redpool", "label": "Sworn Knight", "title": "\u003cb\u003eSworn Knight\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eher knights and sworn swords, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Narbert Grandison", "label": "Sworn Knight", "title": "\u003cb\u003eSworn Knight\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eher knights and sworn swords, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Princess Shireen", "label": "Daughter", "title": "\u003cb\u003eDaughter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003etheir daughter, a girl of eleven, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Stannis Baratheon", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Princess Shireen", "label": "Daughter", "title": "\u003cb\u003eDaughter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003etheir daughter, a girl of eleven, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Queen Selyse", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Princess Shireen", "label": "Niece", "title": "\u003cb\u003eNiece\u003c/b\u003e\u003cbr\u003e\u003csmall\u003etheir daughter, a girl of eleven, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Benethon Scales", "label": "Sworn Knight", "title": "\u003cb\u003eSworn Knight\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eher knights and sworn swords, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Stannis Baratheon", "label": "Husband", "title": "\u003cb\u003eHusband\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ethe First of His Name, second son of Lord Steffon Baratheon and Lady Cassana of House Estermont, Lord of Dragonstone, styling himself King of Westeros\u003c/small\u003e", "to": "Queen Selyse", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Stannis Baratheon", "label": "Father", "title": "\u003cb\u003eFather\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ethe First of His Name, second son of Lord Steffon Baratheon and Lady Cassana of House Estermont, Lord of Dragonstone, styling himself King of Westeros\u003c/small\u003e", "to": "Princess Shireen", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Lambert Whitewater", "label": "Sworn Knight", "title": "\u003cb\u003eSworn Knight\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eher knights and sworn swords, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Castellan Of Dragonstone, Uncle To Queen Selyse", "title": "\u003cb\u003eCastellan Of Dragonstone, Uncle To Queen Selyse\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCastellan Of Dragonstone, Uncle To Queen Selyse\u003c/small\u003e", "to": "Stannis Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Uncle", "title": "\u003cb\u003eUncle\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecastellan of Dragonstone\u003c/small\u003e", "to": "Queen Selyse", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Uncle", "title": "\u003cb\u003eUncle\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eforemost of the queens men, styling himself the Queens Hand, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Princess Shireen", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eforemost of the queens men, styling himself the Queens Hand, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Narbert Grandison", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eforemost of the queens men, styling himself the Queens Hand, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Benethon Scales", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eforemost of the queens men, styling himself the Queens Hand, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Patrek Of Kings Mountain", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eforemost of the queens men, styling himself the Queens Hand, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Dorden The Dour", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eforemost of the queens men, styling himself the Queens Hand, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Male-Gorn Of Redpool", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eforemost of the queens men, styling himself the Queens Hand, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Lambert Whitewater", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eforemost of the queens men, styling himself the Queens Hand, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Perkin Follard", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Liege Lord", "title": "\u003cb\u003eLiege Lord\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eforemost of the queens men, styling himself the Queens Hand, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Brus Buckler", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Axell Florent", "label": "Castellan", "title": "\u003cb\u003eCastellan\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecastellan of Dragonstone\u003c/small\u003e", "to": "King Stannis Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Brus Buckler", "label": "Sworn Knight", "title": "\u003cb\u003eSworn Knight\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eher knights and sworn swords, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Queen Selyse", "label": "Wife", "title": "\u003cb\u003eWife\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eWas and is King Stannis\u0027s queen\u003c/small\u003e", "to": "King Stannis Baratheon", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Queen Selyse", "label": "Wife", "title": "\u003cb\u003eWife\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ehis wife, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Stannis Baratheon", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Queen Selyse", "label": "Mother", "title": "\u003cb\u003eMother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ehis wife, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Princess Shireen", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Queen Selyse", "label": "Sister", "title": "\u003cb\u003eSister\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ehis wife, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Dorden The Dour", "label": "Sworn Knight", "title": "\u003cb\u003eSworn Knight\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eher knights and sworn swords, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Perkin Follard", "label": "Sworn Knight", "title": "\u003cb\u003eSworn Knight\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eher knights and sworn swords, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "His Uncle And Cousins", "label": "His Uncle And Cousins", "title": "\u003cb\u003eHis Uncle And Cousins\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER AXELL FLORENT\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Patrek Of Kings Mountain", "label": "Sworn Knight", "title": "\u003cb\u003eSworn Knight\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eher knights and sworn swords, at Eastwatch-by-the-Sea\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "At Eastwatch-By-The-Sea", "label": "At Eastwatch-By-The-Sea", "title": "\u003cb\u003eAt Eastwatch-By-The-Sea\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ePRINCESS SHIREEN\u003c/small\u003e", "to": "Princess Shireen", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "At Eastwatch-By-The-Sea", "label": "At Eastwatch-By-The-Sea", "title": "\u003cb\u003eAt Eastwatch-By-The-Sea\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER AXELL FLORENT\u003c/small\u003e", "to": "Ser Axell Florent", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>

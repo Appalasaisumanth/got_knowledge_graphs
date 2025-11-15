@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Delena Florent", "label": "Delena Florent", "shape": "dot", "size": 14}, {"borderWidth": 5, "color": {"background": "#95a5a6", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "Edric Storm", "label": "Edric Storm", "shape": "dot", "size": 24}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Their Children", "label": "Their Children", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Delena", "label": "Delena", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Delena Of House Florent", "label": "Lady Delena Of House Florent", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "King Robert", "label": "King Robert", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Triston", "label": "Triston", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Triston Of Tally Hill", "label": "Ser Triston Of Tally Hill", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "His Brothers", "label": "His Brothers", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Stannis Baratheon", "label": "Stannis Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Omer Blackberry", "label": "Omer Blackberry", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014His Knights And Sworn Swords", "label": "\u2014His Knights And Sworn Swords", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014His Siblings", "label": "\u2014His Siblings", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Gerald Gower", "label": "Gerald Gower", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lewys Called The Fish-Wife", "label": "Lewys Called The Fish-Wife", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Joffrey Baratheon", "label": "Joffrey Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "King Robert I Baratheon", "label": "King Robert I Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "\u2014Their Children", "label": "\u2014Their Children", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lewys", "label": "Lewys", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Robert Baratheon", "label": "Robert Baratheon", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "His Rainbow Guard", "label": "His Rainbow Guard", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Cortnay Penrose", "label": "Ser Cortnay Penrose", "shape": "dot", "size": 14}, {"color": {"background": "#e67e22", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Stannis Baratheon, Robert Baratheon, Delena Florent, Andrew Estermont, Gerald Gower, Lewys, Triston, Omer Blackberry", "label": "Stannis Baratheon, Robert Baratheon, Delena Florent, Andrew Estermont, Gerald Gower, Lewys, Triston, Omer Blackberry", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "His Knights And Sworn Swords", "label": "His Knights And Sworn Swords", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Andrew Estermont", "label": "Ser Andrew Estermont", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Gerald Gower", "label": "Ser Gerald Gower", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Delena Florent", "label": "Mother", "title": "\u003cb\u003eMother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMother\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Their Children", "label": "Their Children", "title": "\u003cb\u003eTheir Children\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eDELENA\u003c/small\u003e", "to": "Delena", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Their Children", "label": "Their Children", "title": "\u003cb\u003eTheir Children\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eEDRIC STORM\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lady Delena Of House Florent", "label": "Mother Of", "title": "\u003cb\u003eMother Of\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMother Of\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Lady Delena Of House Florent", "label": "Mother (Of Bastard Son)", "title": "\u003cb\u003eMother (Of Bastard Son)\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMother (Of Bastard Son)\u003c/small\u003e", "to": "King Robert", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Triston", "label": "Guard And Protector", "title": "\u003cb\u003eGuard And Protector\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eking\u0027s man\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Triston Of Tally Hill", "label": "Guard And Protector", "title": "\u003cb\u003eGuard And Protector\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGuard And Protector\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "His Brothers", "label": "His Brothers", "title": "\u003cb\u003eHis Brothers\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSTANNIS BARATHEON\u003c/small\u003e", "to": "Stannis Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "His Brothers", "label": "His Brothers", "title": "\u003cb\u003eHis Brothers\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eEDRIC STORM\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Omer Blackberry", "label": "Knight/Sworn Sword", "title": "\u003cb\u003eKnight/Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eKnight/Sworn Sword\u003c/small\u003e", "to": "Stannis Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Omer Blackberry", "label": "Guard And Protector", "title": "\u003cb\u003eGuard And Protector\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGuard And Protector\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Knights And Sworn Swords", "label": "\u2014His Knights And Sworn Swords", "title": "\u003cb\u003e\u2014His Knights And Sworn Swords\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eEDRIC STORM\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "\u2014His Siblings", "label": "\u2014His Siblings", "title": "\u003cb\u003e\u2014His Siblings\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eDELENA\u003c/small\u003e", "to": "Delena", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Siblings", "label": "\u2014His Siblings", "title": "\u003cb\u003e\u2014His Siblings\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eEDRIC STORM\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Gerald Gower", "label": "Knight/Sworn Sword", "title": "\u003cb\u003eKnight/Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eKnight/Sworn Sword\u003c/small\u003e", "to": "Stannis Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Gerald Gower", "label": "Guard And Protector", "title": "\u003cb\u003eGuard And Protector\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eking\u0027s man\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lewys Called The Fish-Wife", "label": "Guard And Protector", "title": "\u003cb\u003eGuard And Protector\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGuard And Protector\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Joffrey Baratheon", "label": "Eldest Son", "title": "\u003cb\u003eEldest Son\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFirst of His Name, a boy of thirteen years\u003c/small\u003e", "to": "King Robert I Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014Their Children", "label": "\u2014Their Children", "title": "\u003cb\u003e\u2014Their Children\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eEDRIC STORM\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "\u2014Their Children", "label": "\u2014Their Children", "title": "\u003cb\u003e\u2014Their Children\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eDELENA\u003c/small\u003e", "to": "Delena", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Lewys", "label": "Knight/Sworn Sword", "title": "\u003cb\u003eKnight/Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ecalled THE FISHWIFE\u003c/small\u003e", "to": "Stannis Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lewys", "label": "Guard And Protector", "title": "\u003cb\u003eGuard And Protector\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eking\u0027s man\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Robert Baratheon", "label": "Father", "title": "\u003cb\u003eFather\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFather\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Stannis Baratheon", "label": "Paternal Uncle", "title": "\u003cb\u003ePaternal Uncle\u003c/b\u003e\u003cbr\u003e\u003csmall\u003estyling himself King Stannis the First\u003c/small\u003e", "to": "Joffrey Baratheon", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Stannis Baratheon", "label": "Brother", "title": "\u003cb\u003eBrother\u003c/b\u003e\u003cbr\u003e\u003csmall\u003erebel\u003c/small\u003e", "to": "Robert Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "King Robert I Baratheon", "label": "Father", "title": "\u003cb\u003eFather\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFather\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "His Rainbow Guard", "label": "His Rainbow Guard", "title": "\u003cb\u003eHis Rainbow Guard\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eEDRIC STORM\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Ward", "title": "\u003cb\u003eWard\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea bastard son of King Robert by Lady Delena of House Florent\u003c/small\u003e", "to": "Ser Cortnay Penrose", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Bastard Son", "title": "\u003cb\u003eBastard Son\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBastard Son\u003c/small\u003e", "to": "King Robert", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea bastard son of King Robert by Lady Delena of House Florent\u003c/small\u003e", "to": "Lady Delena Of House Florent", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea bastard fathered by King Robert\u003c/small\u003e", "to": "Delena", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Baseborn Sibling", "title": "\u003cb\u003eBaseborn Sibling\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eKing Robert\u2019s only acknowledged bastard son, a ward of his uncle Stannis on Dragonstone\u003c/small\u003e", "to": "Joffrey Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Baseborn Nephew", "title": "\u003cb\u003eBaseborn Nephew\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea boy of twelve, bastard son of King Robert by Delena Florent\u003c/small\u003e", "to": "Stannis Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Bastard Son", "title": "\u003cb\u003eBastard Son\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eTwelve years of age\u003c/small\u003e", "to": "King Robert I Baratheon", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Bastard Nephew, Son, Son, Subject Of Escort, Subject Of Guards And Protectors", "title": "\u003cb\u003eBastard Nephew, Son, Son, Subject Of Escort, Subject Of Guards And Protectors\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ea boy of twelve, sailing the narrow sea on the Mad Prendos\u003c/small\u003e", "to": "Stannis Baratheon, Robert Baratheon, Delena Florent, Andrew Estermont, Gerald Gower, Lewys, Triston, Omer Blackberry", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Edric Storm", "label": "Acknowledged Bastard Son", "title": "\u003cb\u003eAcknowledged Bastard Son\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ehiding in Lys\u003c/small\u003e", "to": "Robert Baratheon", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "His Knights And Sworn Swords", "label": "His Knights And Sworn Swords", "title": "\u003cb\u003eHis Knights And Sworn Swords\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER CORTNAY PENROSE\u003c/small\u003e", "to": "Ser Cortnay Penrose", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "His Knights And Sworn Swords", "label": "His Knights And Sworn Swords", "title": "\u003cb\u003eHis Knights And Sworn Swords\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eEDRIC STORM\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Andrew Estermont", "label": "Cousin And Guardian", "title": "\u003cb\u003eCousin And Guardian\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCousin And Guardian\u003c/small\u003e", "to": "Edric Storm", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Andrew Estermont", "label": "Cousin", "title": "\u003cb\u003eCousin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCousin\u003c/small\u003e", "to": "Robert Baratheon", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Ser Gerald Gower", "label": "Guard And Protector", "title": "\u003cb\u003eGuard And Protector\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGuard And Protector\u003c/small\u003e", "to": "Edric Storm", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>

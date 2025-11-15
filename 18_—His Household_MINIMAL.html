@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ghost", "label": "Ghost", "shape": "dot", "size": 14}, {"color": {"background": "#3498db", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Jon Snow", "label": "Jon Snow", "shape": "dot", "size": 14}, {"borderWidth": 5, "color": {"background": "#95a5a6", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "\u2014His Household", "label": "\u2014His Household", "shape": "dot", "size": 24}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Hellholt", "label": "Lord Of Hellholt", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Starfall", "label": "Lord Of Starfall", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Of Godsgrace", "label": "Lady Of Godsgrace", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Kingsgrave", "label": "Lord Of Kingsgrave", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Of Blackmont", "label": "Lady Of Blackmont", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Salt Shore", "label": "Lord Of Salt Shore", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Yronwood", "label": "Lord Of Yronwood", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Elwood", "label": "Elwood", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Delp", "label": "Delp", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of The Stone Hedge", "label": "Lord Of The Stone Hedge", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Seagard", "label": "Lord Of Seagard", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of The Crossing", "label": "Lord Of The Crossing", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Pinkmaiden Castle", "label": "Lord Of Pinkmaiden Castle", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Wayfarer", "label": "Lord Of Wayfarer", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Atranta", "label": "Lord Of Atranta", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Acorn Hall", "label": "Lord Of Acorn Hall", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Ravella", "label": "Lady Ravella", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Carellen", "label": "Carellen", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Maidenpool", "label": "Lord Of Maidenpool", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "The Principal Houses Sworn To Sunspear Include Jordayne", "label": "The Principal Houses Sworn To Sunspear Include Jordayne", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Santagar", "label": "Santagar", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Allyrion", "label": "Allyrion", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Toland", "label": "Toland", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Yronwood", "label": "Yronwood", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Wyl", "label": "Wyl", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Fowler", "label": "Fowler", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Dayne", "label": "Dayne", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "High Steward Of The Vale", "label": "High Steward Of The Vale", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Albar", "label": "Ser Albar", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Andar", "label": "Ser Andar", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Robar", "label": "Ser Robar", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Robar The Red Of The Rainbow Guard", "label": "Robar The Red Of The Rainbow Guard", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Commander Of The Night", "label": "Lord Commander Of The Night", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Clydas", "label": "Clydas", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "First Ranger", "label": "First Ranger", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of The Arbor", "label": "Lord Of The Arbor", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Mina", "label": "Lady Mina", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Horn Hill", "label": "Lord Of Horn Hill", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Of Old Oak", "label": "Lady Of Old Oak", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Goldengrove", "label": "Lord Of Goldengrove", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Voice Of Oldtown", "label": "Voice Of Oldtown", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of The Port", "label": "Lord Of The Port", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ghost", "label": "Direwolf", "title": "\u003cb\u003eDirewolf\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eDirewolf\u003c/small\u003e", "to": "Jon Snow", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Hellholt\u003c/small\u003e", "to": "Lord Of Hellholt", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Starfall\u003c/small\u003e", "to": "Lord Of Starfall", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLady of Godsgrace\u003c/small\u003e", "to": "Lady Of Godsgrace", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Kingsgrave\u003c/small\u003e", "to": "Lord Of Kingsgrave", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLady of Blackmont\u003c/small\u003e", "to": "Lady Of Blackmont", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Salt Shore\u003c/small\u003e", "to": "Lord Of Salt Shore", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Yronwood\u003c/small\u003e", "to": "Lord Of Yronwood", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eELWOOD\u003c/small\u003e", "to": "Elwood", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eDELP\u003c/small\u003e", "to": "Delp", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of the Stone Hedge\u003c/small\u003e", "to": "Lord Of The Stone Hedge", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Seagard\u003c/small\u003e", "to": "Lord Of Seagard", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of the Crossing\u003c/small\u003e", "to": "Lord Of The Crossing", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Pinkmaiden Castle\u003c/small\u003e", "to": "Lord Of Pinkmaiden Castle", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Wayfarer\u2019s Rest\u003c/small\u003e", "to": "Lord Of Wayfarer", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Atranta\u003c/small\u003e", "to": "Lord Of Atranta", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Acorn Hall\u003c/small\u003e", "to": "Lord Of Acorn Hall", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLADY RAVELLA\u003c/small\u003e", "to": "Lady Ravella", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCARELLEN\u003c/small\u003e", "to": "Carellen", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Maidenpool\u003c/small\u003e", "to": "Lord Of Maidenpool", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eThe principal houses sworn to Sunspear include Jordayne\u003c/small\u003e", "to": "The Principal Houses Sworn To Sunspear Include Jordayne", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSantagar\u003c/small\u003e", "to": "Santagar", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eAllyrion\u003c/small\u003e", "to": "Allyrion", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eToland\u003c/small\u003e", "to": "Toland", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eYronwood\u003c/small\u003e", "to": "Yronwood", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eWyl\u003c/small\u003e", "to": "Wyl", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFowler\u003c/small\u003e", "to": "Fowler", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eDayne. previous | Table of Contents | nextprevious | Table of Contents The Old Dynasty HOUSE TARGARYEN The Targaryens are the blood of the dragon\u003c/small\u003e", "to": "Dayne", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eHigh Steward of the Vale\u003c/small\u003e", "to": "High Steward Of The Vale", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER ALBAR\u003c/small\u003e", "to": "Ser Albar", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER ANDAR\u003c/small\u003e", "to": "Ser Andar", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER ROBAR\u003c/small\u003e", "to": "Ser Robar", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eRobar the Red of the Rainbow Guard\u003c/small\u003e", "to": "Robar The Red Of The Rainbow Guard", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord Commander of the Night\u2019s Watch\u003c/small\u003e", "to": "Lord Commander Of The Night", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eJON SNOW\u003c/small\u003e", "to": "Jon Snow", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGHOST\u003c/small\u003e", "to": "Ghost", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCLYDAS\u003c/small\u003e", "to": "Clydas", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eFirst Ranger\u003c/small\u003e", "to": "First Ranger", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of the Arbor\u003c/small\u003e", "to": "Lord Of The Arbor", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLADY MINA\u003c/small\u003e", "to": "Lady Mina", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Horn Hill\u003c/small\u003e", "to": "Lord Of Horn Hill", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLady of Old Oak\u003c/small\u003e", "to": "Lady Of Old Oak", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Goldengrove\u003c/small\u003e", "to": "Lord Of Goldengrove", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eVoice of Oldtown\u003c/small\u003e", "to": "Voice Of Oldtown", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "\u2014His Household", "label": "\u2014His Household", "title": "\u003cb\u003e\u2014His Household\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of the Port\u003c/small\u003e", "to": "Lord Of The Port", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Jon Snow", "label": "Direwolf", "title": "\u003cb\u003eDirewolf\u003c/b\u003e\u003cbr\u003e\u003csmall\u003ewhite and silent (Ghost)\u003c/small\u003e", "to": "Ghost", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>

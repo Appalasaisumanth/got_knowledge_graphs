@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #0a0a0a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lanna", "label": "Lanna", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Damion Lannister", "label": "Ser Damion Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Antario Jast", "label": "Lord Antario Jast", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Gawen Westerling", "label": "Gawen Westerling", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lords Of The West", "label": "Lords Of The West", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Selmond Stackspear", "label": "Lord Selmond Stackspear", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Regenard Estren", "label": "Regenard Estren", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Tytos Brax", "label": "Tytos Brax", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Sebaston Farman", "label": "Sebaston Farman", "shape": "dot", "size": 14}, {"borderWidth": 5, "color": {"background": "#f1c40f", "border": "#ffffff"}, "font": {"size": 32, "strokeWidth": 10}, "id": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "shape": "dot", "size": 24}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Cerenna", "label": "Cerenna", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Myrielle", "label": "Myrielle", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Staffords Daughters", "label": "Staffords Daughters", "shape": "dot", "size": 14}, {"color": {"background": "#f1c40f", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Daven Lannister", "label": "Ser Daven Lannister", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Staffords Son", "label": "Staffords Son", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Lucion", "label": "Ser Lucion", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lady Margot", "label": "Lady Margot", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Ashemark", "label": "Lord Of Ashemark", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Roland Crakehall", "label": "Roland Crakehall", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Crakehall", "label": "Lord Of Crakehall", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Fair Isle", "label": "Lord Of Fair Isle", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Hornvale", "label": "Lord Of Hornvale", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Quenten Banefort", "label": "Quenten Banefort", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Banefort", "label": "Lord Of Banefort", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Ser Harys Swyft", "label": "Ser Harys Swyft", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Wyndhall", "label": "Lord Of Wyndhall", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of The Crag", "label": "Lord Of The Crag", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Terrence Kenning", "label": "Terrence Kenning", "shape": "dot", "size": 14}, {"color": {"background": "#95a5a6", "border": "#ffffff", "highlight": {"border": "#ffff00"}}, "font": {"size": 13}, "id": "Lord Of Kayce", "label": "Lord Of Kayce", "shape": "dot", "size": 14}]);
+                  edges = new vis.DataSet([{"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Lanna", "label": "Daughter", "title": "\u003cb\u003eDaughter\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eDaughter\u003c/small\u003e", "to": "Ser Damion Lannister", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Lanna", "label": "Married", "title": "\u003cb\u003eMarried\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMarried\u003c/small\u003e", "to": "Lord Antario Jast", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Gawen Westerling", "label": "Bannerman, Sworn Sword", "title": "\u003cb\u003eBannerman, Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman, Sworn Sword\u003c/small\u003e", "to": "Lords Of The West", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Lord Selmond Stackspear", "label": "Bannerman, Sworn Sword", "title": "\u003cb\u003eBannerman, Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman, Sworn Sword\u003c/small\u003e", "to": "Lords Of The West", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Regenard Estren", "label": "Bannerman, Sworn Sword", "title": "\u003cb\u003eBannerman, Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman, Sworn Sword\u003c/small\u003e", "to": "Lords Of The West", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Tytos Brax", "label": "Bannerman, Sworn Sword", "title": "\u003cb\u003eBannerman, Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman, Sworn Sword\u003c/small\u003e", "to": "Lords Of The West", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Lord Antario Jast", "label": "Married", "title": "\u003cb\u003eMarried\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMarried\u003c/small\u003e", "to": "Lanna", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Sebaston Farman", "label": "Bannerman, Sworn Sword", "title": "\u003cb\u003eBannerman, Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman, Sworn Sword\u003c/small\u003e", "to": "Lords Of The West", "width": 1}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eCERENNA\u003c/small\u003e", "to": "Cerenna", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eMYRIELLE\u003c/small\u003e", "to": "Myrielle", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eStaffords daughters\u003c/small\u003e", "to": "Staffords Daughters", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER DAVEN LANNISTER\u003c/small\u003e", "to": "Ser Daven Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eStaffords son\u003c/small\u003e", "to": "Staffords Son", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER DAMION LANNISTER\u003c/small\u003e", "to": "Ser Damion Lannister", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER LUCION\u003c/small\u003e", "to": "Ser Lucion", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLANNA\u003c/small\u003e", "to": "Lanna", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLADY MARGOT\u003c/small\u003e", "to": "Lady Margot", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLords of the West: DAMON MARBRAND\u003c/small\u003e", "to": "Lords Of The West", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Ashemark\u003c/small\u003e", "to": "Lord Of Ashemark", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eROLAND CRAKEHALL\u003c/small\u003e", "to": "Roland Crakehall", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Crakehall\u003c/small\u003e", "to": "Lord Of Crakehall", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSEBASTON FARMAN\u003c/small\u003e", "to": "Sebaston Farman", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Fair Isle\u003c/small\u003e", "to": "Lord Of Fair Isle", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eTYTOS BRAX\u003c/small\u003e", "to": "Tytos Brax", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Hornvale\u003c/small\u003e", "to": "Lord Of Hornvale", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eQUENTEN BANEFORT\u003c/small\u003e", "to": "Quenten Banefort", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Banefort\u003c/small\u003e", "to": "Lord Of Banefort", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSER HARYS SWYFT\u003c/small\u003e", "to": "Ser Harys Swyft", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eREGENARD ESTREN\u003c/small\u003e", "to": "Regenard Estren", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Wyndhall\u003c/small\u003e", "to": "Lord Of Wyndhall", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eGAWEN WESTERLING\u003c/small\u003e", "to": "Gawen Westerling", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of the Crag\u003c/small\u003e", "to": "Lord Of The Crag", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLORD SELMOND STACKSPEAR\u003c/small\u003e", "to": "Lord Selmond Stackspear", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eTERRENCE KENNING\u003c/small\u003e", "to": "Terrence Kenning", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLord of Kayce\u003c/small\u003e", "to": "Lord Of Kayce", "width": 3}, {"arrows": "to", "color": {"color": "#ff6b6b"}, "font": {"background": "rgba(0,0,0,0.6)", "color": "#ff9999", "size": 13}, "from": "Lord Tywins Other Close Kin", "label": "Lord Tywins Other Close Kin", "title": "\u003cb\u003eLord Tywins Other Close Kin\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eLORD ANTARIO JAST\u003c/small\u003e", "to": "Lord Antario Jast", "width": 3}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Ser Lucion", "label": "Son", "title": "\u003cb\u003eSon\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eSon\u003c/small\u003e", "to": "Ser Damion Lannister", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Quenten Banefort", "label": "Bannerman, Sworn Sword", "title": "\u003cb\u003eBannerman, Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman, Sworn Sword\u003c/small\u003e", "to": "Lords Of The West", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Roland Crakehall", "label": "Bannerman, Sworn Sword", "title": "\u003cb\u003eBannerman, Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman, Sworn Sword\u003c/small\u003e", "to": "Lords Of The West", "width": 1}, {"arrows": "to", "font": {"background": "rgba(0,0,0,0.6)", "color": "#ffffff", "size": 11}, "from": "Terrence Kenning", "label": "Bannerman, Sworn Sword", "title": "\u003cb\u003eBannerman, Sworn Sword\u003c/b\u003e\u003cbr\u003e\u003csmall\u003eBannerman, Sworn Sword\u003c/small\u003e", "to": "Lords Of The West", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "size": 14, "font": {"size": 13, "face": "arial", "strokeWidth": 3, "strokeColor": "#000000"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false, "font": {"size": 10, "align": "middle", "color": "#fff", "strokeWidth": 2, "strokeColor": "#000000", "background": "rgba(10,10,10,0.7)", "padding": 2}, "color": {"color": "#666666", "highlight": "#999999"}, "width": 1.5, "arrowStrikethrough": false}, "interaction": {"hover": true, "navigationButtons": false, "keyboard": false}, "layout": {"randomSeed": 123}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript">
+    const search = document.createElement("input");
+    search.type = "text";
+    search.placeholder = "Search... (e.g. Jon, Arya, Killed)";
+    search.style.cssText = "position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 18px;width:400px;font-size:16px;border:none;border-radius:30px;outline:none;background:#000;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.6);text-align:center;";
+    document.body.appendChild(search);
+
+    search.addEventListener("input", function() {
+        const term = this.value.toLowerCase().trim();
+        const nodes = network.body.data.nodes;
+        nodes.getIds().forEach(id => {
+            const label = (nodes.get(id).label || "").toLowerCase();
+            nodes.update({id: id, hidden: term && !label.includes(term)});
+        });
+    });
+
+    network.on("click", p => {
+        if (p.nodes.length === 1) {
+            const node = p.nodes[0];
+            const conn = network.getConnectedNodes(node);
+            network.body.data.nodes.getIds().forEach(n => {
+                const visible = n === node || conn.includes(n);
+                network.body.data.nodes.update({id: n, hidden: !visible, size: visible ? (n===node ? 40 : 18) : 14});
+            });
+        }
+    });
+
+    network.on("doubleClick", () => {
+        network.body.data.nodes.update(network.body.data.nodes.get().map(n => ({id: n.id, hidden: false, size: 14})));
+        search.value = "";
+        network.fit({animation: false});
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") network.fit({animation: false});
+        if (e.key === "r") location.reload();
+    });
+
+    setTimeout(() => network.fit({animation: false}), 500);
+</script>
+</body>
+</html>
